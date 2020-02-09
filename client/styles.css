@@ -2,7 +2,17 @@
     text-align: center;
 }
 
-.slat-box{
+.slat-box, .loading{
     width: 50%;
     margin: 0 auto;
 }
+
+.loading{
+    text-align: center;
+}
+
+.slats{
+    width: 80%;
+    margin: 0 auto;
+}
+
