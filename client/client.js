@@ -33,12 +33,16 @@ form.addEventListener('submit', (event) => {
       .then(createdSlat => {
         console.log(createdSlat);
         form.reset();
-        loadingElement.style.display = 'none';
-        form.style.display = '';    
+        loadingElement.style.display = ''; 
+        setTimeout(() => { 
+            form.style.display = ''; 
+        }, 3000);
+        listAllSlats();   
       });
 });
 
 function listAllSlats(){
+    slatsElement.innerHTML = '';
     fetch(API_URL)
         .then(response => response.json())
         .then(slats => {

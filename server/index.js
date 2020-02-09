@@ -1,14 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 const monk = require('monk');
+const Filter = require('bad-words');
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 
-const db = monk('localhost/Slimey');
+const db = monk(process.env.MONGO_URI || 'localhost/Slimey');
 const slats = db.get('slats');
+const filter = new Filter();
 
 app.use(cors());
 app.use(express.json());
+
 
 app.get('/', (req, res) =>{
     res.json({
@@ -29,11 +33,17 @@ function isValidSlat(slat){
      slat.content && slat.content.toString().trim() !== '';
 };
 
+app.use(rateLimit({
+    windowMs:  15 * 60 * 1000,
+    max: 1
+}));
+
+
 app.post('/slats', (req, res) => {
     if(isValidSlat(req.body)){
         const slat = {
-            name: req.body.name.toString(),
-            content: req.body.content.toString(),
+            name: filter.clean(req.body.name.toString()),
+            content: filter.clean(req.body.content.toString()),
             created: new Date()
 
         };
