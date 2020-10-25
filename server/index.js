@@ -2,23 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const monk = require('monk');
 const Filter = require('bad-words');
-const rateLimit = require("express-rate-limit");
+const http = require('http')
+const PORT = process.env.PORT || 5000
+const rateLimit = require('express-rate-limit');
+var path = require('path');
+var open = require('open');
 
 const app = express();
 
-const db = monk(process.env.MONGO_URI || 'localhost/Slimey');
+const db = monk(process.env.MONGODB_URI || 'localhost/Slimey');
 const slats = db.get('slats');
 const filter = new Filter();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '/../client')));
 
-
-app.get('/', (req, res) =>{
-    res.json({
-        message: 'Mad Slatter!'
-    });
-});
 
 app.get('/slats', (req,res) =>{
     slats
@@ -28,14 +27,21 @@ app.get('/slats', (req,res) =>{
       });
 });
 
+
+app.get('/', function(req, res) {
+    res.sendFile('client/index.html', { root: '../'});
+});
+
 function isValidSlat(slat){
     return slat.name && slat.name.toString().trim() !== '' &&
      slat.content && slat.content.toString().trim() !== '';
 };
 
+
+
 app.use(rateLimit({
-    windowMs:  15 * 60 * 1000,
-    max: 1
+    windowMs:  30 * 1000,
+    max: 2
 }));
 
 
@@ -60,6 +66,10 @@ app.post('/slats', (req, res) => {
     }
 });
 
-app.listen(5000, () => {
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/../client')));
+}
+
+app.listen(PORT, () => {
     console.log('Listening on http://localhost:5000');
 });

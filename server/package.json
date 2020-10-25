@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -15,11 +14,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-rate-limit": "^5.0.0",
-    "mongodb": "^3.5.2",
-    "monk": "^7.1.2",
-    "morgan": "^1.9.1"
+    "mongodb": "^3.6.2",
+    "monk": "^7.3.2",
+    "morgan": "^1.9.1",
+    "open": "^7.3.0",
+    "websocket": "^1.0.32"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
-  }
+    "nodemon": "^2.0.6"
+  },
+  "description": ""
 }
