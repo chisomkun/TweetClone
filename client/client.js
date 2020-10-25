@@ -2,11 +2,10 @@ console.log("hello world");
 
 const form = document.querySelector('form');
 const loadingElement = document.querySelector('.loading');
-loadingElement.style.display = 'none';
 const API_URL = 'http://localhost:5000/slats';
 const slatsElement = document.querySelector('.slats');
 
-loadingElement.style.display = '';
+loadingElement.style.display = 'none';
 
 listAllSlats();
 
@@ -20,8 +19,9 @@ form.addEventListener('submit', (event) => {
         name,
         content
     };
+    form.style.display = '';
     loadingElement.style.display = '';
-    form.style.display = 'none';
+    
 
     fetch(API_URL, {
         method: 'POST',
@@ -31,9 +31,7 @@ form.addEventListener('submit', (event) => {
         }
     }).then(response => response.json())
       .then(createdSlat => {
-        console.log(createdSlat);
         form.reset();
-        loadingElement.style.display = ''; 
         setTimeout(() => { 
             form.style.display = ''; 
         }, 3000);
